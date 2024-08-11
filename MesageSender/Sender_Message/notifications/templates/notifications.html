@@ -1,0 +1,25 @@
+<!-- notifications.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+</head>
+<body>
+    <h1>Notifications</h1>
+    <div id="notifications"></div>
+
+    <!-- WebSocket script to listen for notifications -->
+    <script>
+        const userId = "{{ request.user.id }}";  // Get the user's ID
+        const ws = new WebSocket(`ws://${window.location.host}/ws/notifications/user_${userId}/`);
+
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            const notificationsDiv = document.getElementById('notifications');
+            notificationsDiv.innerHTML += `<p>${data.message}</p>`;
+        };
+    </script>
+</body>
+</html>
